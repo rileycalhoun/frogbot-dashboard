@@ -17,7 +17,8 @@ async function getGuilds(session: Session): Promise<false | Guild[]> {
         provider_refresh_token: refresh_token
     } = session;
 
-    if (access_token && !refresh_token) {
+    if (!access_token && refresh_token) {
+        console.log("here 2");
         const discord_request = await fetch(`${HOST}/api/refresh?code=${refresh_token}`);
         const discord_response = await discord_request.json();
 
@@ -32,9 +33,9 @@ async function getGuilds(session: Session): Promise<false | Guild[]> {
 
                 let response = await request.json();
                 if (!response || !response.ok) {
-                    console.log(response);
                     return false;
                 }
+
                 const guilds = (response as Guild[])
                     .filter(guild => (guild.permissions & 0x20) === 0x20);
                 return guilds;
@@ -43,6 +44,7 @@ async function getGuilds(session: Session): Promise<false | Guild[]> {
             }
         }
     } else if (access_token) {
+        console.log("here 3");
         try {
             const request = await fetch(`${DISCORD_API_URI}/users/@me/guilds`, {
                 headers: { Authorization: `Bearer ${access_token}` }
@@ -64,13 +66,11 @@ async function getGuilds(session: Session): Promise<false | Guild[]> {
 export const load = (async ({ locals, cookies }) => {
     let session = await locals.getSession();
     if (!session) {
-        console.log("here 1")
         throw redirect(302, '/');
     }
 
     let response: false | Guild[] = await getGuilds(session);
     if (!response) {
-        console.log("here 2")
         throw redirect(302, '/');
     }
 
