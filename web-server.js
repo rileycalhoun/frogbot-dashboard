@@ -6,7 +6,10 @@ dotenv.config();
 const app = express();
 
 app.get('/health', (req, res) => {
-    res.send('OK');
+    res.send({
+        status: 'OK',
+        message: 'Server is running.'
+    });
 });
 
 app.use(handler);
