@@ -13,8 +13,19 @@ const rest = new REST({ version: '10' })
 
 async function getGuilds(session: Session, supabase: SupabaseClient): Promise<false | Guild[]> {
     let {
-        provider_token: access_token
+        provider_token: access_token,
+        provider_refresh_token: refresh_token
     } = session;
+
+    if(refresh_token && !access_token) {
+        let { data: { session: newSession }, error } = await supabase.auth.refreshSession(session);
+        if(error) {
+            return false;
+        }
+
+        access_token = newSession?.access_token as string;
+        refresh_token = newSession?.refresh_token as string;
+    }    
 
     try {
         const request = await fetch(`${DISCORD_API_URI}/users/@me/guilds`, {
@@ -28,6 +39,7 @@ async function getGuilds(session: Session, supabase: SupabaseClient): Promise<fa
         return guilds;
     } catch (error) {
         await supabase.auth.refreshSession(session);
+        return false;
     }
 
     return false;
