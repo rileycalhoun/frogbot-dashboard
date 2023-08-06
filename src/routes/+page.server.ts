@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { HOST, DISCORD_API_URI, DISCORD_BOT_ID, DISCORD_REDIRECT_PATH } from "$env/static/private";
+import { DISCORD_API_URI, DISCORD_BOT_ID, DISCORD_REDIRECT_PATH } from "$env/static/private";
 import { redirect } from '@sveltejs/kit';
 
 const days = ['Sunday', 'Monday', 'Tuesday', 

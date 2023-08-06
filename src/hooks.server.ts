@@ -10,6 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
         event
     });
 
+    await event.locals.supabase.auth.refreshSession();
     event.locals.getSession = async () => {
         const {
             data: { session }

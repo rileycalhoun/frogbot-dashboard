@@ -4,7 +4,7 @@ import type Parameters from "$lib/types/Parameters";
 import type { PageServerLoad, Actions } from "./$types";
 
 import Guilds from "$lib/mongo/models/Guild";
-import { DISCORD_BOT_TOKEN } from "$env/static/private";
+import { DISCORD_BOT_TOKEN, ORIGIN } from "$env/static/private";
 import { redirect } from "@sveltejs/kit";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
@@ -13,7 +13,7 @@ import { connect, disconnect } from '$lib/mongo/db';
 const rest = new REST({ version: '10' })
     .setToken(DISCORD_BOT_TOKEN);
 
-export const load = (async ({ params, locals }) => {
+export const load = (async ({ params }) => {
     await connect();
     const { slug: id } = params as Parameters;
 
@@ -27,7 +27,7 @@ export const load = (async ({ params, locals }) => {
             await Guilds.create({
                 id,
                 name: guild.name,
-                nickname: guild.name,
+                nickname: '',
                 icon: guild.icon,
                 messageTime: "10:00",
                 timezone: "GMT-8",
