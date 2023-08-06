@@ -23,13 +23,13 @@ async function getGuilds(session: Session, supabase: SupabaseClient): Promise<fa
             return false;
         }
 
-        access_token = newSession?.access_token as string;
-        refresh_token = newSession?.refresh_token as string;
+        session.provider_token = newSession?.access_token as string;
+        session.provider_refresh_token = newSession?.refresh_token as string;
     }    
 
     try {
         const request = await fetch(`${DISCORD_API_URI}/users/@me/guilds`, {
-            headers: { Authorization: `Bearer ${access_token}` }
+            headers: { Authorization: `Bearer ${session.access_token}` }
         });
 
         let response = await request.json();
