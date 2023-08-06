@@ -1,12 +1,12 @@
 import type Guild from "$lib/types/guild/DiscordGuild";
-import type { PageData, PageServerLoad } from "../$types";
+import type { PageServerLoad } from "../$types";
 
 import { redirect } from "@sveltejs/kit";
 import { ORIGIN, DISCORD_BASE_URI, DISCORD_API_URI, DISCORD_BOT_TOKEN, DISCORD_BOT_ID, GUILD_REDIRECT_PATH } from "$env/static/private";
 
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
-import type { Session, SupabaseClient, UserMetadata } from "@supabase/supabase-js";
+import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 const rest = new REST({ version: '10' })
     .setToken(DISCORD_BOT_TOKEN);
@@ -38,11 +38,8 @@ async function getGuilds(session: Session, supabase: SupabaseClient): Promise<fa
             .filter(guild => (guild.permissions & 0x20) === 0x20);
         return guilds;
     } catch (error) {
-        await supabase.auth.refreshSession(session);
         return false;
     }
-
-    return false;
 }
 
 export const load = (async ({ locals }) => {
