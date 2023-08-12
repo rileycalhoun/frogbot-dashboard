@@ -94,13 +94,6 @@ export const actions = {
                     nickname
                 }
             }).exec();
-
-            rest.put(Routes.guildMember(id, DISCORD_BOT_ID), {
-                reason: 'Changing nickname',
-                body: {
-                    nick: nickname
-                }                   
-            });
         } catch (error) {
             await disconnect();
 
