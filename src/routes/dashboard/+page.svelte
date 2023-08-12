@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import type Guild from '$lib/types/guild/DiscordGuild';
 	import type { PageData } from './$types';
-	
+
 	export let data: PageData;
-	
+
 	const { props } = data;
 	const { user, guilds } = props;
 
@@ -34,8 +35,9 @@
 		<div class="top-left-corner">
 			<p class="username">Logged in as {user.full_name}</p>
 			<p class="server-count">You are in {guilds.length} servers!</p>
-			<p class="server-count">I am in {botGuilds.length} of them!</p>	
-			<button id="signout" on:click={() => (window.location.href = '/api/signout')}>Sign out</button>
+			<p class="server-count">I am in {botGuilds.length} of them!</p>
+			<button id="signout" on:click={() => (window.location.href = '/api/signout')}>Sign out</button
+			>
 		</div>
 
 		<h1>Dashboard</h1>
@@ -44,19 +46,33 @@
 			{#each botGuilds as guild}
 				<li class="server-item">
 					<a class="server-link" href={`/dashboard/${guild.id}`}>
-						<img class="{`${guild.icon === null ? 'server-text' : 'server-icon'}`}" src={guild.iconUrl} alt={getAltName(guild)} />
+						<img
+							class={`${guild.icon === null ? 'server-text' : 'server-icon'}`}
+							src={guild.iconUrl}
+							alt={getAltName(guild)}
+						/>
 					</a>
 				</li>
 			{/each}
 			{#each nonBotGuilds as guild}
 				<li class="server-item gray-out">
 					<a class="server-link" href={guild.invite}>
-						<img class="{`${guild.icon === null ? 'server-text' : 'server-icon'}`}" src={guild.iconUrl} alt={getAltName(guild)} />
+						<img
+							class={`${guild.icon === null ? 'server-text' : 'server-icon'}`}
+							src={guild.iconUrl}
+							alt={getAltName(guild)}
+						/>
 					</a>
 				</li>
 			{/each}
 		</ul>
 	</div>
+
+	<MetaTags
+		title="Server List"
+		titleTemplate="%s | FrogBot"
+		description="Select a server to edit!"
+	/>
 </main>
 
 <style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
@@ -16,27 +17,25 @@
 			}
 		});
 
-		if(error) {
+		if (error) {
 			console.error(error);
 			return;
 		}
 
 		window.location.href = data.url || '/';
-	}
+	};
 </script>
 
 <main>
 	<div class="flexbox">
 		{#if session === undefined || session === null}
-			<button
-				on:click={() => handleLoginWithDiscord()}
-				>Login with Discord
-			</button>
+			<button on:click={() => handleLoginWithDiscord()}>Login with Discord </button>
 		{:else}
 			<button
 				on:click={() => {
 					window.location.href = '/dashboard';
-				}}>Dashboard</button>
+				}}>Dashboard</button
+			>
 			<h3>Welcome, {session.user.user_metadata.full_name}!</h3>
 		{/if}
 		{#if index === 0}
@@ -46,6 +45,8 @@
 			<img src="images/{index}.png" alt={dotw} />
 		{/if}
 	</div>
+
+	<MetaTags title="Home" titleTemplate="%s | FrogBot" description="See the image of the day!" />
 </main>
 
 <style lang="postcss">

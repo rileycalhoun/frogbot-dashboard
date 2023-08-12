@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const { props } = data;
@@ -391,6 +392,12 @@
 		</select>
 		<button type="submit">Change Channel</button>
 	</form>
+
+	<MetaTags
+		title="Dashboard"
+		titleTemplate="%s | FrogBot"
+		description="Change settings about your server!"
+	/>
 </main>
 
 <style>
