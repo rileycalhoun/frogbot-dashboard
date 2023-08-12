@@ -4,7 +4,7 @@ import type Parameters from "$lib/types/Parameters";
 import type { PageServerLoad, Actions } from "./$types";
 
 import Guilds from "$lib/mongo/models/Guild";
-import { DISCORD_BOT_TOKEN, ORIGIN } from "$env/static/private";
+import { DISCORD_BOT_TOKEN, DISCORD_BOT_ID } from "$env/static/private";
 import { redirect } from "@sveltejs/kit";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
@@ -89,13 +89,18 @@ export const actions = {
         }
 
         try {
-
             await Guilds.findOneAndUpdate({ id }, {
                 $set: {
                     nickname
                 }
             }).exec();
 
+            rest.put(Routes.guildMember(id, DISCORD_BOT_ID), {
+                reason: 'Changing nickname',
+                body: {
+                    nick: nickname
+                }                   
+            });
         } catch (error) {
             await disconnect();
 
