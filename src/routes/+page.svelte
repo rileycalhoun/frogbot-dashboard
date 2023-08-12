@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
 	let { props, supabase, session } = data;
-	let { day } = props;
+	let { day, redirect_uri } = props;
 	let { name: dotw, index } = day;
 
 	$: ({ supabase } = data);
 
 	const handleLoginWithDiscord = async () => {
 		let { data, error } = await supabase.auth.signInWithOAuth({
-			provider: 'discord'
+			provider: 'discord',
+			options: {
+				redirectTo: redirect_uri
+			}
 		});
 
 		if(error) {

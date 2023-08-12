@@ -1,9 +1,10 @@
 import type { PageServerLoad } from './$types';
-import { DISCORD_API_URI, DISCORD_BOT_ID, DISCORD_REDIRECT_PATH } from "$env/static/private";
-import { redirect } from '@sveltejs/kit';
+import { ORIGIN, DISCORD_REDIRECT_PATH } from '$env/static/private';
 
 const days = ['Sunday', 'Monday', 'Tuesday', 
 	'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+const redirect_uri = `${ORIGIN}${DISCORD_REDIRECT_PATH}`;
 
 export const load: PageServerLoad = async ({ locals }) => {
 	let index = new Date().getDay();
@@ -14,7 +15,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 			day: {
 				name: day,
 				index
-			}
+			},
+			redirect_uri
 		}
 	};
 };
